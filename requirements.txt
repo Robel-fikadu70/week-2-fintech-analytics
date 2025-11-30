@@ -4,3 +4,4 @@ textblob
 scikit-learn
 matplotlib
 seaborn
+nltk
