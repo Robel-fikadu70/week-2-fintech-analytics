@@ -1,10 +1,16 @@
 import pandas as pd
 from sqlalchemy import create_engine, text
 import os
+from dotenv import load_dotenv  # Import this
 
-# --- CONFIGURATION ---
-# Format: postgresql://user:password@localhost:5432/database_name
-DB_CONNECTION_STR = 'postgresql://postgres:postgres@localhost:5432/bank_reviews'
+# Load environment variables from .env file
+load_dotenv()
+
+# Get the secure URL
+DB_CONNECTION_STR = os.getenv("DATABASE_URL")
+
+if not DB_CONNECTION_STR:
+    raise ValueError("DATABASE_URL not found in .env file. Please check your configuration.")
 
 CSV_PATH = os.path.join("data", "sentiment_analysis.csv")
 SCHEMA_PATH = "schema.sql"
