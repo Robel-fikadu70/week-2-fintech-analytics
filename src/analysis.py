@@ -76,6 +76,29 @@ def extract_pain_points(df):
                     print(f"  - {kw}")
             except ValueError:
                 print(f"\n{bank}: Not enough data for keyword extraction.")
+def rule_based_clustering(text):
+    """
+    Rubric: Group related keywords into 3-5 overarching themes.
+    """
+    text = str(text).lower()
+    
+    # Define Themes & Keywords
+    themes = {
+        'Account Access': ['login', 'password', 'sms', 'code', 'otp', 'sign in', 'block'],
+        'Transaction Issues': ['transfer', 'send', 'transaction', 'failed', 'money', 'deducted'],
+        'App Performance': ['slow', 'crash', 'close', 'stuck', 'update', 'bug', 'network'],
+        'UI/UX': ['interface', 'design', 'look', 'hard', 'confusing', 'user friendly'],
+    }
+    
+    detected_themes = []
+    for theme, keywords in themes.items():
+        if any(k in text for k in keywords):
+            detected_themes.append(theme)
+            
+    return ", ".join(detected_themes) if detected_themes else "General Feedback"
+
+
+# df['theme'] = df['review_text'].apply(rule_based_clustering)
 
 def main():
     if not os.path.exists(INPUT_PATH):
@@ -95,6 +118,8 @@ def main():
     # --- TASK 2: NLP PIPELINE ---
     print("Running NLP Pipeline (Tokenize -> Stopwords -> Lemmatize)...")
     df['lemmatized_text'] = df['review_text'].apply(advanced_nlp_pipeline)
+
+    df['theme'] = df['review_text'].apply(rule_based_clustering)
 
     # --- TASK 2: THEME EXTRACTION ---
     extract_pain_points(df)
