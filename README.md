@@ -11,7 +11,17 @@ This project scrapes and analyzes Google Play Store reviews for three Ethiopian 
 ## Setup Instructions
 1. Create a virtual environment: `python -m venv venv`
 2. Activate it and install dependencies: `pip install -r requirements.txt`
-3. Run the pipeline:
+3. Configuration:
+Create a .env file in the root directory and add your database credentials:
+code
+```bash
+DATABASE_URL=postgresql://user:password@localhost:5432/bank_reviews
+```
+4. Run the Unit Tests:
+```bash
+python -m unittest tests/test_pipeline.py
+```
+5. Run the pipeline:
    ```bash
    python src/scraper.py
    python src/cleaner.py
